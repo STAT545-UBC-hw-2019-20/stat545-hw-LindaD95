@@ -1,11 +1,13 @@
 ---
-title: "STAT 545A Homework Repository " 
-output: html_document
-theme: flatly  
-keep_md: true
+title: 'STAT 545A Homework Repository '
+output:
+  html_document: default
+  pdf_document: default
+theme: flatly
+keep_md: yes
 ---
 
-This repository (repo) is where assignments for **STAT 545A** are to be submitted. 
+##### This repository (repo) is where assignments for **STAT 545A** are to be submitted. 
 
 **STAT 545A is a course offered by the University of British Columbia to graduate students from a variety of disciplines to learn how to manipulate data with R.** 
 
@@ -15,15 +17,15 @@ My name is Linda Dumalo and I am currently doing a M.Sc of Biochemistry and Mole
 
 My research interests are: 
 
--Enzymology
+* Enzymology
  
   -Specifically, enzyme kinetics 
 
--Structural biology
+* Structural biology
 
--Microbiology
+* Microbiology
 
--Conducting proper experiments   ***controls, controls, controls***
+* Conducting proper experiments   ***controls, controls, controls***
 
 
 Sometimes, science does not work or your data is less than stellar and not expected so a favourit quote from a fellow lab member is 
