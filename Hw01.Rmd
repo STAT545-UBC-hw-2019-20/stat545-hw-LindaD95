@@ -1,9 +1,7 @@
 ---
-
 title: "STAT 545A Homework Repository " 
 output: html_document
-  keep_md: true
-  
+keep_md: true
 ---
 
 # This repository (repo) is where assignments for **STAT 545A** are to be submitted. 
@@ -15,11 +13,17 @@ For more inormation about the course go to the [Course website](https://stat545.
 My name is Linda Dumalo and I am currently doing a M.Sc of Biochemistry and Molecular Biology in Dr. Lindsay Eltis's lab. 
 
 My research interests are: 
+
 -Enzymology
+ 
   -Specifically, enzyme kinetics 
+
 -Structural biology
+
 -Microbiology
+
 -Conducting proper experiments 
+
     *controls, controls, controls* 
 
 
