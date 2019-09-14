@@ -32,18 +32,19 @@ Sometimes, science does not work or your data is less than stellar and not expec
 > *It is what it is* 
 
 
-## *Going Macro:* Gapminder Exercise 
+## **Going Macro:** Gapminder Exercise 
 
-Sometimes, it is easy to caught in your research niche and forget that there is a whole world out there! I was born in the Czech Republic (now Czechia) but I realized that I do not know how many countries there are in Europe! 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
 ```{r gapminder}
-library(gapminder)
+# Sometimes, it is easy to caught in your research niche and forget that there is a whole world out there! I was born in the Czech Republic (now Czechia) but I realized that I do not know how many nations there are in Eurpoe, let alone the world. Turns out there are: 
 
+library(gapminder)
+nrow(gapminder)
 ```
 
   l
