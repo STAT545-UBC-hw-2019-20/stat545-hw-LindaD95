@@ -41,14 +41,17 @@ knitr::opts_chunk$set(echo = FALSE)
 
 
 ```{r gapminder}
-# Sometimes, it is easy to become so fixated on your research and forget that there is a whole world out there! Exploring the Gapminder data frame informed me that are 
+# Gapminder is an important dateframe since it looks at the following 6 variables for a country: 
+names(gapminder)
+
 
 library(gapminder)
+
+# I thought that the number of rows would inform on the number of countries however, the value obtained of 1706 seemed awfully high 
 nrow(gapminder)
 
-# The 6 variables on the countries are as follows: 
-
-names(gapminder)
+# this is because the data when downloaded in organized alphabetically by country and the year 
+head(gapminder)
 
 # You can look to which counttries have life exptancies greater than say, 65 years of age 
 # ***TROUBLESHOOTING**** 
