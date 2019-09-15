@@ -4,7 +4,6 @@ output:
   html_document: default
   pdf_document: default
 theme: flatly
-keep_md: yes
 ---
 
 ##### This repository (repo) is where assignments for **STAT 545A** are to be submitted. 
@@ -29,6 +28,7 @@ My research interests are:
 
 
 Sometimes, science does not work or your data is less than stellar and not expected so a favourit quote from a fellow lab member is 
+
 > *It is what it is* 
 
 
@@ -39,27 +39,9 @@ Sometimes, science does not work or your data is less than stellar and not expec
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+Gapminder is an important data frame since it looks at the following 6 variables for a country:
 
 ```{r gapminder}
-# Gapminder is an important dateframe since it looks at the following 6 variables for a country: 
-names(gapminder)
-
-
 library(gapminder)
-
-# I thought that the number of rows would inform on the number of countries however, the value obtained of 1706 seemed awfully high 
-nrow(gapminder)
-
-# this is because the data when downloaded in organized alphabetically by country and the year 
-head(gapminder)
-
-# You can look to which counttries have life exptancies greater than say, 65 years of age 
-# ***TROUBLESHOOTING**** 
-gampinder %>% 
-  filter(year == 2007) %>%
-  summarise(lifeExp = mean(lifeExp))
-
-# other thing that I wanted to do was extract the information on a particular country 
+names(gapminder)
 ```
-
-  l
