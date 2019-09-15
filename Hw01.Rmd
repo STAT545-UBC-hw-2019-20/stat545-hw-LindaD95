@@ -41,10 +41,22 @@ knitr::opts_chunk$set(echo = FALSE)
 
 
 ```{r gapminder}
-# Sometimes, it is easy to caught in your research niche and forget that there is a whole world out there! I was born in the Czech Republic (now Czechia) but I realized that I do not know how many nations there are in Eurpoe, let alone the world. Turns out there are: 
+# Sometimes, it is easy to become so fixated on your research and forget that there is a whole world out there! Exploring the Gapminder data frame informed me that are 
 
 library(gapminder)
 nrow(gapminder)
+
+# The 6 variables on the countries are as follows: 
+
+names(gapminder)
+
+# You can look to which counttries have life exptancies greater than say, 65 years of age 
+# ***TROUBLESHOOTING**** 
+gampinder %>% 
+  filter(year == 2007) %>%
+  summarise(lifeExp = mean(lifeExp))
+
+# other thing that I wanted to do was extract the information on a particular country 
 ```
 
   l
