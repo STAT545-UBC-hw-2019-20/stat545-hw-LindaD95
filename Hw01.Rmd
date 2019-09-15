@@ -1,9 +1,10 @@
 ---
 title: 'STAT 545A Homework Repository '
 output:
-  html_document: default
+  html_document: 
+    theme: united 
   pdf_document: default
-theme: flatly
+keep_md: true 
 ---
 
 ##### This repository (repo) is where assignments for **STAT 545A** are to be submitted. 
@@ -26,8 +27,9 @@ My research interests are:
 
 * Conducting proper experiments   ***controls, controls, controls***
 
-
-Sometimes, science does not work or your data is less than stellar and not expected so a favourit quote from a fellow lab member is 
+ 
+ 
+#### Sometimes, science does not work or your data is less than stellar and not expected so a favourit quote from a fellow lab member is 
 
 > *It is what it is* 
 
@@ -39,12 +41,23 @@ Sometimes, science does not work or your data is less than stellar and not expec
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-Gapminder is an important data frame since it looks at the following 6 variables for a country. The number of rows was 1706 which is definetly a lot more than the number of countries in the world! The reason for this is that the when gapminder is downloaded it is organized by country alphabetically and then by the year. 
+The data ffrom gapminder is on a much larger scale than what I am used to! 
+
+Gapminder looks at 6 different indicators of the countries of the world. Specifically: 
 
 ```{r gapminder}
 library(gapminder)
 names(gapminder)
-nrow(gapminder)
-head(gapminder)
 ```
 
+ The number of rows was 1706 which is definetly a lot more than the number of countries in the world!
+ 
+```{r}
+nrow(gapminder)
+```
+
+The reason for this is that the when gapminder is downloaded it is organized by country alphabetically and then by the year. 
+
+```{r}
+head(gapminder)
+```
