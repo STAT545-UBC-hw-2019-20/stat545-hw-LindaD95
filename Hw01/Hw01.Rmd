@@ -41,7 +41,7 @@ My research interests are:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-The data from gapminder is on a much larger scale than enzymes since it looks at 6 different indicators of the countries of the world which are list below: 
+The data from gapminderis on a much larger scale than enzymes since it looks at 6 different indicators of the countries of the world which are list below: 
 
 ```{r gapminder}
 library(gapminder)
