@@ -1,6 +1,6 @@
 ---
 title: "STAT 545 Assingment 1"
-Author: Linda Dumalo
+author: Linda Dumalo
 output: beamer_presentation
 
 ---
