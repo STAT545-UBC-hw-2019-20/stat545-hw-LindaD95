@@ -41,14 +41,14 @@ My research interests are:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-The data from gapminderis on a much larger scale than enzymes since it looks at 6 different indicators of the countries of the world which are list below: 
+The data from gapminder is on a much larger scale than enzymes since it looks at 6 different indicators of the countries of the world which are list below: 
 
 ```{r gapminder}
 library(gapminder)
 names(gapminder)
 ```
 
- The number of rows was 1706 which is definetly a lot more than the number of countries in the world!
+The number of rows was 1706 which is definetly a lot more than the number of countries in the world!
  
 ```{r}
 nrow(gapminder)
