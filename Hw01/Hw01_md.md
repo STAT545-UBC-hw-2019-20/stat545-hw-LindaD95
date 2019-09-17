@@ -48,7 +48,7 @@ library(gapminder)
 names(gapminder)
 ```
 
- The number of rows was 1706 which is definetly a lot more than the number of countries in the world!
+The number of rows was 1706 which is definetly a lot more than the number of countries in the world!
  
 ```{r}
 nrow(gapminder)
