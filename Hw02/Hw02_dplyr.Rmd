@@ -20,5 +20,11 @@ library(tidyverse)
 ### Exercise 1: Basic dplyr 
 
 ```{r} 
-filter(gapminder, country %in%  c("Australia", "Canada", "Germany"))
+filter(gapminder, country %in%  c("Australia", "Canada", "Germany")) 
+```
+
+```{r} 
+gapminder %>%
+filter(country %in%  c("Australia", "Canada", "Germany")) %>% 
+  select(country, gdpPercap) 
 ```
