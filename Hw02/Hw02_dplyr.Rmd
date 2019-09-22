@@ -57,3 +57,11 @@ gapminder %>%
   have a column that says increase in life exptancy, sort based on decreasing life Exp 
   I also would like filter down to just the year 2007 (bonus though)
   
+
+``` {r}
+gapminder %>% 
+  mutate(lifeExp, lag_lifeExp = lag(lifeExp)) %>% 
+  mutate(lifeExp, delta_lifeExp = lifeExp - lag_lifeExp) %>%
+  arrange(delta_lifeExp) %>% 
+  filter(year == 2007)
+```
