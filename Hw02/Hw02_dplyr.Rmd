@@ -38,12 +38,6 @@ filter(country %in%  c("Australia", "Canada", "Germany")) %>%
 Filter gapminder to all entries that have experienced a drop in life expectancy. Be sure to include a new variable that’s the increase in life expectancy in your tibble. Hint: you might find the lag() or diff() functions useful. 
 ``` {r} 
 gapminder %>% 
-  mutate(lifeExp, deltat_lifeExp = lag(_____))
-# this will generate a new column just fine but not sure of what goes in the ____ 
-
-gapminder %>% 
-  mutate(lifeExp, deltat_lifeExp = lag(lifeExp, ____) 
-         
-         # what if you selected to only display the year 2007 --> table dimensions will would match the output of what is being displayed 
-         
-         Just no fucking clue right now 
+  mutate(lifeExp, lag_lifeExp = lag(lifeExp)) %>% 
+  mutate(lifeExp, delta_lifeExp = lifeExp - lag_lifeExp)
+```
