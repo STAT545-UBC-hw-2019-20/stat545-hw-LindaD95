@@ -65,3 +65,15 @@ gapminder %>%
   arrange(delta_lifeExp) %>% 
   filter(year == 2007)
 ```
+
+# maybe only display change in life_exp 
+
+### Exercise 1.4 
+
+Filter gapminder so that it shows the max GDP per capita experienced by each country. 
+
+``` {r}
+gapminder %>% 
+  group_by(country) %>%
+  filter(gdpPercap == max(gdpPercap))
+```
