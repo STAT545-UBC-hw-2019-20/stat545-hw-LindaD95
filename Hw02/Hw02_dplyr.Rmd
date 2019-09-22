@@ -33,11 +33,27 @@ filter(country %in%  c("Australia", "Canada", "Germany")) %>%
   select(country, gdpPercap) 
 ```
 
-#### Exercise 1.3 
+#### Exerciseilter( ) all countries that have experienced a decrease 
+..... could it also be that when the instructions say  1.3 
 
 Filter gapminder to all entries that have experienced a drop in life expectancy. Be sure to include a new variable that’s the increase in life expectancy in your tibble. Hint: you might find the lag() or diff() functions useful. 
 ``` {r} 
+
 gapminder %>% 
   mutate(lifeExp, lag_lifeExp = lag(lifeExp)) %>% 
-  mutate(lifeExp, delta_lifeExp = lifeExp - lag_lifeExp)
+  mutate(lifeExp, delta_lifeExp = lifeExp - lag_lifeExp) %>%
+  
 ```
+
+Code chunk below will is to filter based on decreasing lifeExp ie negative values. 
+
+``` {r}
+gapminder %>% 
+  mutate(lifeExp, lag_lifeExp = lag(lifeExp)) %>% 
+  mutate(lifeExp, delta_lifeExp = lifeExp - lag_lifeExp) %>%
+  filter(delta_lifeExp < 0) 
+```
+  Think however that this what is being asked is to : 
+  have a column that says increase in life exptancy, sort based on decreasing life Exp 
+  I also would like filter down to just the year 2007 (bonus though)
+  
