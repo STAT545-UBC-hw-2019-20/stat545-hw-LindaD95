@@ -147,14 +147,16 @@ gapminder %>%
   summarize(gdpPercap = sum(gdpPercap)) 
 ``` 
 
-## Exercise 3 
+
+
+## Exercise 3: Explore various plot types
 
 Source for description of data:
 https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/beavers.html 
 
 #### Description of Dataframe 
 
-Reynolds (1994) describes a small part of a study of the long-term temperature dynamics of beaver *Castor canadensis* in north-central Wisconsin. Body temperature was measured by telemetry every 10 minutes for females. The data used corresponds to 1 day in December, starting at 8:40 am (840) to 23:50 (2350)
+Reynolds (1994) describes a small part of a study of the long-term temperature dynamics of beaver *Castor canadensis* in north-central Wisconsin. Body temperature was measured by telemetry every 10 minutes for females. The data used corresponds to 1 day in December, starting at 8:40 am (840) to 23:50 (2350). Temperatures are in degree celsius. 
 
 ``` {r} 
 beaverday <- data.frame(beaver1) %>% 
@@ -163,10 +165,23 @@ beaverday <- data.frame(beaver1) %>%
 
 ``` {r}
 ggplot(beaverday, aes(time, temp)) + 
-  geom_point(aes(time, temp)) 
-  
+  geom_point(aes(time, temp)) + 
+  geom_point(colour = "blue", alpha = 0.8) +
+  theme_bw()
 ```
 
+Scatter plot to show the relationship between inactivity (0) and activity (1). 
 
+``` {r}
+ggplot(beaverday, aes(activ, temp)) + 
+  geom_point(aes(activ, temp)) + 
+  geom_point(colour = "blue", alpha = 0.8) +
+  theme_bw()
+```
+However, this is not an ideal way to display this relationship. A ** boxplot** would be a better option to show the spread of body temperature for when beavers are inactive or active and to show the average temperature. 
 
-
+``` {r}
+beaverday %>%
+  ggplot(aes(activ, temp, group = 2)) 
+  stat_boxplot(fill = NA)
+```
