@@ -106,8 +106,10 @@ Trying to see which country in Asia had the largest gdpPercap and which had the 
 ``` {r}
 gapminder %>%  # trying to show the higest and the lowest gdppercap 
   filter(continent == 'Asia') %>%
-  filter(year >= 2007) %>%
+  filter(year == 2007) %>%
   group_by(country) %>%
-  summarize(year, gdpPercap = max(gdpPercap))  
+  summarize(gdpPercap = max(gdpPercap)) %>%
+  top_n(5)  %>% 
+  arrange(desc(gdpPercap))
 ```
   
