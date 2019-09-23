@@ -131,39 +131,6 @@ gapminder %>%
   summarize(gdpPercap = mean(gdpPercap)) 
 ```
 
-
-``` {r include = FALSE}
-max <- gapminder %>%  # was trying to show the higest and the lowest gdppercap in 1 table 
-  filter(continent == 'Asia') %>%
-  filter(year == 2007) %>%
-  group_by(country) %>%
-  summarize(gdpPercap = max(gdpPercap)) %>%
-  top_n(1)  
-```
-
-``` {r include = FALSE}
-min <- gapminder %>%  # was, trying to show the higest and the lowest gdppercap 
-  filter(continent == 'Asia') %>%
-  filter(year == 2007) %>%
-  group_by(country) %>%
-  summarize(gdpPercap = max(gdpPercap)) %>%
-  top_n(-1)  
-```
-
-
-Myanmar's GDP per capita is approximately 2 % that of Kuwait. 
-
-``` {r}
-  round(min/max*100, 0)
-```
-```{r} 
-gapminder %>%  
-  filter(continent == 'Asia') %>%
-  filter(year == 2007) %>%
-  summarize(gdpPercap = sum(gdpPercap)) 
-```
-
-
 Minimum and Maximum GDP per capita in 2007 in Asia 
 
 | **Country**  | **GDP per Capita in 2007** | 
@@ -171,5 +138,35 @@ Minimum and Maximum GDP per capita in 2007 in Asia
 | Myanmar  | 944 |
 | Kuwait   | 47307 |
 
-# Exercise 3 
+Total GDP per capita in Asia for 2007 
+
+``` {r} 
+gapminder %>%  
+  filter(continent == 'Asia') %>%
+  filter(year == 2007) %>%
+  summarize(gdpPercap = sum(gdpPercap)) 
+``` 
+
+## Exercise 3 
+
+Source for description of data:
+https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/beavers.html 
+
+#### Description of Dataframe 
+
+Reynolds (1994) describes a small part of a study of the long-term temperature dynamics of beaver *Castor canadensis* in north-central Wisconsin. Body temperature was measured by telemetry every 10 minutes for females. The data used corresponds to 1 day in December, starting at 8:40 am (840) to 23:50 (2350)
+
+``` {r} 
+beaverday <- data.frame(beaver1) %>% 
+  slice(1:91)
+```
+
+``` {r}
+ggplot(beaverday, aes(time, temp)) + 
+  geom_point(aes(time, temp)) 
+  
+```
+
+
+
 
