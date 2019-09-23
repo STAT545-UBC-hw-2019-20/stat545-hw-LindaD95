@@ -101,19 +101,13 @@ gapminder %>%
 
 The 2 categorical variables are 'country' and 'continent' 
 
+Trying to see which country in Asia had the largest gdpPercap and which had the lowest in 2007, displayed as a tsibble. 
 
 ``` {r}
-gapminder %>% 
+gapminder %>%  # trying to show the higest and the lowest gdppercap 
   filter(continent == 'Asia') %>%
-  filter(year >= 1997) 
-```
-
-Using just the year 2007 
-
-``` {r}
-gapminder %>% 
-  filter(continent == 'Asia') %>%
-  filter(year == 2007) %>% 
-  arrange(desc(gdpPercap))
+  filter(year >= 2007) %>%
+  group_by(country) %>%
+  summarize(year, gdpPercap = max(gdpPercap))  
 ```
   
