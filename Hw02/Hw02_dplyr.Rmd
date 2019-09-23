@@ -99,17 +99,50 @@ gapminder %>%
 
 ### Categorical Variable Exploration 
 
-The 2 categorical variables are 'country' and 'continent' 
+Exploring the GDP per capita (gdpPercap) for the countries in Asia for the year 2007. The GDP per capita is stated in USD. 
 
-Trying to see which country in Asia had the largest gdpPercap and which had the lowest in 2007, displayed as a tsibble. 
+**Maximum GDP Per Capita**
 
 ``` {r}
-gapminder %>%  # trying to show the higest and the lowest gdppercap 
+max <- gapminder %>%  # was, trying to show the higest and the lowest gdppercap in 1 table 
   filter(continent == 'Asia') %>%
   filter(year == 2007) %>%
   group_by(country) %>%
   summarize(gdpPercap = max(gdpPercap)) %>%
-  top_n(5)  %>% 
-  arrange(desc(gdpPercap))
+  top_n(1)  
 ```
-  
+
+**Minimum GDP Per Capita**
+
+``` {r}
+min <- gapminder %>%  # was, trying to show the higest and the lowest gdppercap 
+  filter(continent == 'Asia') %>%
+  filter(year == 2007) %>%
+  group_by(country) %>%
+  summarize(gdpPercap = max(gdpPercap)) %>%
+  top_n(-1)  
+```
+
+** Would like to store values and then plot 
+
+** The average GDP per Capita for the year 2007 ** 
+
+``` {r} 
+avg <- gapminder %>%  
+  filter(continent == 'Asia') %>%
+  filter(year == 2007) %>%
+  summarize(gdpPercap = mean(gdpPercap)) 
+```
+
+Myanmar's GDP per capita is approximately 2 % that of Kuwait. 
+
+``` {r}
+  round(min/max*100, 0)
+```
+
+| Country  | GDP per Capita in 2007 | 
+-------------------------------------
+| Myanmar  | 944 |
+| Kuwait   | 47307 |
+
+
