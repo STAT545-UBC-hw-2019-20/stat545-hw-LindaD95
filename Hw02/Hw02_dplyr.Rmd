@@ -104,7 +104,7 @@ Exploring the GDP per capita (gdpPercap) for the countries in Asia for the year 
 **Maximum GDP Per Capita**
 
 ``` {r}
-max <- gapminder %>%  # was, trying to show the higest and the lowest gdppercap in 1 table 
+gapminder %>%  # was, trying to show the higest and the lowest gdppercap in 1 table 
   filter(continent == 'Asia') %>%
   filter(year == 2007) %>%
   group_by(country) %>%
@@ -115,6 +115,33 @@ max <- gapminder %>%  # was, trying to show the higest and the lowest gdppercap 
 **Minimum GDP Per Capita**
 
 ``` {r}
+gapminder %>%  # was, trying to show the higest and the lowest gdppercap 
+  filter(continent == 'Asia') %>%
+  filter(year == 2007) %>%
+  group_by(country) %>%
+  summarize(gdpPercap = max(gdpPercap)) %>%
+  top_n(-1)  
+```
+** The average GDP per Capita for the year 2007 ** 
+
+``` {r} 
+gapminder %>%  
+  filter(continent == 'Asia') %>%
+  filter(year == 2007) %>%
+  summarize(gdpPercap = mean(gdpPercap)) 
+```
+
+
+``` {r include = FALSE}
+max <- gapminder %>%  # was trying to show the higest and the lowest gdppercap in 1 table 
+  filter(continent == 'Asia') %>%
+  filter(year == 2007) %>%
+  group_by(country) %>%
+  summarize(gdpPercap = max(gdpPercap)) %>%
+  top_n(1)  
+```
+
+``` {r include = FALSE}
 min <- gapminder %>%  # was, trying to show the higest and the lowest gdppercap 
   filter(continent == 'Asia') %>%
   filter(year == 2007) %>%
@@ -123,26 +150,26 @@ min <- gapminder %>%  # was, trying to show the higest and the lowest gdppercap
   top_n(-1)  
 ```
 
-** Would like to store values and then plot 
-
-** The average GDP per Capita for the year 2007 ** 
-
-``` {r} 
-avg <- gapminder %>%  
-  filter(continent == 'Asia') %>%
-  filter(year == 2007) %>%
-  summarize(gdpPercap = mean(gdpPercap)) 
-```
 
 Myanmar's GDP per capita is approximately 2 % that of Kuwait. 
 
 ``` {r}
   round(min/max*100, 0)
 ```
+```{r} 
+gapminder %>%  
+  filter(continent == 'Asia') %>%
+  filter(year == 2007) %>%
+  summarize(gdpPercap = sum(gdpPercap)) 
+```
 
-| Country  | GDP per Capita in 2007 | 
+
+Minimum and Maximum GDP per capita in 2007 in Asia 
+
+| **Country**  | **GDP per Capita in 2007** | 
 -------------------------------------
 | Myanmar  | 944 |
 | Kuwait   | 47307 |
 
+# Exercise 3 
 
