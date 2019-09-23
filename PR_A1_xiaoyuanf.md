@@ -1,5 +1,5 @@
 ---
-title: "Peer Review for xiaoyuanf"
+title: "Peer Review of Assignment 1 for xiaoyuanf"
 output: 
   html_document:
     keep_md: true 
@@ -7,17 +7,14 @@ output:
 
 
 
-## Peer-Review of Assignment 1 xiaoyuan
-
-
-Topic                       |      Excellent     |   Satisfactory    | Needs Work |
-----------------------------|--------------------|-------------------|------------|
-**Coding style**            | :heavy_check_mark: |                   |            |
-**Coding strategy**         | :heavy_check_mark: |                   |            |
-**Presentation: graphs**    |                    |:heavy_check_mark: |            |
-**Presentation: tables**    | :heavy_check_mark: |                   |            |  
-**Achievement, creativity** |                    |:heavy_check_mark: |            |
-**Ease of access**          | :heavy_check_mark: |                   |            |
+|Topic                       |      Excellent     |   Satisfactory    | Needs Work |
+-----------------------------|--------------------|-------------------|------------|
+|**Coding style**            | :heavy_check_mark: |                   |            |
+|**Coding strategy**         | :heavy_check_mark: |                   |            |
+|**Presentation: graphs**    |                    |:heavy_check_mark: |            |
+|**Presentation: tables**    | :heavy_check_mark: |                   |            |  
+|**Achievement, creativity** |                    |:heavy_check_mark: |            |
+|**Ease of access**          | :heavy_check_mark: |                   |            |
 
 
 #### Comments 
