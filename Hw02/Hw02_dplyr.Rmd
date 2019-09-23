@@ -21,17 +21,6 @@ library(tidyverse)
 
 #### Exercise 1.2 
 
-Use filter() to subset the gapminder data to three countries of your choice in the 1970’s.
-
-```{r} 
-gapminder %>%
-filter(country %in%  c("Australia", "Canada", "Germany")) %>% 
-  group_by(country) %>% 
-  slice(5:6) # could not get filter to select both 1972 and 1977, points for creativity?  
-```
-
-#### Exercise 1.2 
-
 Use the pipe operator %>% to select “country” and “gdpPercap” from your filtered dataset in 1.1 
 
 ```{r} 
@@ -75,12 +64,11 @@ gapminder %>%
   mutate(lifeExp, lag_lifeExp = lag(lifeExp)) %>% 
   mutate(lifeExp, delta_lifeExp = lifeExp - lag_lifeExp) %>%
    filter(year == 2007) %>%
-  arrange(-desc(delta_lifeExp)) %>%  
-  select(country, year, delta_lifeExp) %>%
-  drop_na(delta_lifeExp)
+  arrange(-desc(delta_lifeExp)) %>% 
+  select(country,delta_lifeExp) %>%
+  drop_na(delta_lifeExp) %>%
+  rename(delta_lifeExp_2002_2007 = delta_lifeExp)
 ```
-
-# maybe only display change in life_exp 
 
 ### Exercise 1.4 
 
@@ -89,7 +77,10 @@ Filter gapminder so that it shows the max GDP per capita experienced by each cou
 ``` {r}
 gapminder %>% 
   group_by(country) %>%
-  filter(gdpPercap == max(gdpPercap))
+  filter(gdpPercap == max(gdpPercap)) %>% 
+  select(country, year, gdpPercap) %>%
+  rename(Max_GDPperCap = gdpPercap)
+
 ```
 
 ### Exercise 1.5 
@@ -105,18 +96,16 @@ gapminder %>%
 ``` 
 
 # Exercise 2 
+
 ### Categorical Variable Exploration 
 
 The 2 categorical variables are 'country' and 'continent' 
 
-Explore the countries of Asia and how the gdpPerCap has changed from the years of 1997 to 2007 
 
 ``` {r}
 gapminder %>% 
   filter(continent == 'Asia') %>%
-  filter(year >= 1997) %>% 
-  group_by(country) %>% 
-  mutate(gdpPercap, prev_gdpPercap, 2)
+  filter(year >= 1997) 
 ```
 
 Using just the year 2007 
