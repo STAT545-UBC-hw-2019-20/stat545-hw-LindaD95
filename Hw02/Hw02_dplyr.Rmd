@@ -1,20 +1,17 @@
 ---
 title: "Assignment 2"
+author: "Linda Dumalo"
+date: "23/09/2019"
 output: 
-  html_document: 
-    keep_md: true 
-editor_options: 
-  chunk_output_type: inline
----
+  html_document:
+    keep_md: true   
+--- 
 
-```{r allow errors, echo = FALSE}
-knitr::opts_chunk$set(error = TRUE)
-```
+```{r setup, include=FALSE, message=F}
 
-```{r load packages, warning = FALSE, message = FALSE}
-# load your packages here:
 library(gapminder)
 library(tidyverse)
+library(ggplot2)
 ``` 
 
 ## Exercise 1: Basic dplyr
@@ -23,14 +20,12 @@ library(tidyverse)
 
 Use the pipe operator %>% to select “country” and “gdpPercap” from your filtered dataset in 1.1 
 
-```{r} 
-gapminder %>%
-filter(country %in%  c("Australia", "Canada", "Germany")) %>% 
-  group_by(country) %>% 
-  slice(5:6) %>%
-  select(country, year, gdpPercap) 
-```
-
+```{r}
+gapminder %>% 
+  filter(country %in%  c("Australia", "Canada", "Germany")) %>%  
+  filter(between(year, 1970, 1980))
+``` 
+  
 #### Exercise 1.3 
 
 Filter gapminder to all entries that have experienced a drop in life expectancy. 
@@ -89,9 +84,13 @@ Produce a scatterplot of Canada’s life expectancy vs. GDP per capita using ggp
 
 ```{r}
 gapminder %>%
-  filter(country == 'Canada') %>%
-  ggplot(aes(lifeExp, log(gdpPercap))) +
-  geom_point()
+  filter(country == "Canada") %>%
+  ggplot(aes(gdpPercap, lifeExp)) + 
+  geom_point() + 
+  scale_x_log10() + 
+  xlab("GDP per Capita") + 
+  ylab("Life Exptectancy")  
+  
 # want to add labels corresonding to the year for each point 
 ``` 
 
@@ -116,6 +115,7 @@ gapminder %>%  # was, trying to show the higest and the lowest gdppercap in 1 ta
 
 ``` {r}
 gapminder %>%  # was, trying to show the higest and the lowest gdppercap 
+  select(country, continent, year, gdpPercap) %>%
   filter(continent == 'Asia') %>%
   filter(year == 2007) %>%
   group_by(country) %>%
@@ -149,14 +149,32 @@ gapminder %>%
 
 
 
-## Exercise 3: Explore various plot types
+## Exercise 3: Explore various plot type
+
+Instead of focusing on the year 2007, the GDP per capita in the countries of Asia will be analyzed from 1987 to 2007 For the countries with the top 10 GDP 
+
+```{r}
+gapminder %>% 
+  filter(continent == 'Asia') %>%
+  filter(between(year,1987,2007)) %>% 
+  group_by(country) %>% 
+  group_by(gdpPercap) %>%
+  arrange(desc(gdpPercap)) %>%
+  slice(1:40) %>% # trying to narrow down to the top 10 countries 
+  ggplot(aes(country, gdpPercap)) +
+  geom_boxplot() +
+  xlab("Country") +
+  ylab("GDP per Capita")
+```
+
+## Exploring a different dataset 
 
 Source for description of data:
 https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/beavers.html 
 
 #### Description of Dataframe 
 
-Reynolds (1994) describes a small part of a study of the long-term temperature dynamics of beaver *Castor canadensis* in north-central Wisconsin. Body temperature was measured by telemetry every 10 minutes for females. The data used corresponds to 1 day in December, starting at 8:40 am (840) to 23:50 (2350). Temperatures are in degree celsius. 
+Reynolds (1994) describes a small part of a study of the long-term temperature dynamics of beaver *Castor canadensis* in north-central Wisconsin. Body temperature was measured by telemetry every 10 minutes for females. The data used corresponds to 1 day in December, starting at 8:40 am (840) to 23:50 (2350). Temperatures are in degree celsius.
 
 ``` {r} 
 beaverday <- data.frame(beaver1) %>% 
@@ -178,10 +196,5 @@ ggplot(beaverday, aes(activ, temp)) +
   geom_point(colour = "blue", alpha = 0.8) +
   theme_bw()
 ```
-However, this is not an ideal way to display this relationship. A ** boxplot** would be a better option to show the spread of body temperature for when beavers are inactive or active and to show the average temperature. 
 
-``` {r}
-beaverday %>%
-  ggplot(aes(activ, temp, group = 2)) 
-  stat_boxplot(fill = NA)
-```
+
