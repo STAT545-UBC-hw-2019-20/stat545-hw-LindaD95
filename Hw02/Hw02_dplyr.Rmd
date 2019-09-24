@@ -17,7 +17,7 @@ library(knitr)
 knitr::kable 
 ``` 
 
-## Exercise 1: Basic dplyr
+## **Exercise 1: Basic dplyr**
 
 #### Exercise 1.2 
 
