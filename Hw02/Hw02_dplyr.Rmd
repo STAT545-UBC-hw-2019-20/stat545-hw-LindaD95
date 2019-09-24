@@ -13,7 +13,8 @@ output:
 library(gapminder)
 library(tidyverse)
 library(ggplot2)
-library(DT)
+library(knitr)
+knitr::kable 
 ``` 
 
 ## Exercise 1: Basic dplyr
