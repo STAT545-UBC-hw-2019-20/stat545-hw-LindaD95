@@ -12,6 +12,7 @@ output:
 library(gapminder)
 library(tidyverse)
 library(ggplot2)
+library(DT)
 ``` 
 
 ## Exercise 1: Basic dplyr
@@ -22,7 +23,7 @@ Use the pipe operator %>% to select “country” and “gdpPercap” from your 
 
 ```{r}
 gapminder %>% 
-  filter(country %in%  c("Australia", "Canada", "Germany")) %>%  
+  filter(country == "Australia" | country == "Canada"| country == "Germany") %>%  
   filter(between(year, 1970, 1980))
 ``` 
   
@@ -160,11 +161,11 @@ gapminder %>%
   group_by(country) %>% 
   group_by(gdpPercap) %>%
   arrange(desc(gdpPercap)) %>%
-  slice(1:40) %>% # trying to narrow down to the top 10 countries 
+  slice(1:40) %>% # trying to narrow down to the countries with the top 10 highest GDP per Capita  
   ggplot(aes(country, gdpPercap)) +
   geom_boxplot() +
   xlab("Country") +
-  ylab("GDP per Capita")
+  ylab("GDP per Capita") 
 ```
 
 ## Exploring a different dataset 
@@ -197,4 +198,17 @@ ggplot(beaverday, aes(activ, temp)) +
   theme_bw()
 ```
 
+### Bonus 
 
+Original code:
+
+```{r}
+filter(gapminder, country == c("Rwanda", "Afghanistan"))
+```
+
+Presumably the analyst’s intent was to get the data for Rwanda and Afghanistan however it appears that there are some rows missing. 
+ 
+```{r}
+gapminder %>%
+    filter(country == "Afghanistan" | country == "Rwanda") 
+```
