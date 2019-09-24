@@ -2,9 +2,10 @@
 title: "Assignment 2"
 author: "Linda Dumalo"
 date: "23/09/2019"
-output: 
+output:
+  pdf_document: default
   html_document:
-    keep_md: true   
+    keep_md: yes
 --- 
 
 ```{r setup, include=FALSE, message=F}
@@ -165,7 +166,7 @@ gapminder %>%
   ggplot(aes(country, gdpPercap)) +
   geom_boxplot() +
   xlab("Country") +
-  ylab("GDP per Capita") 
+  ylab("GDP per Capita") # would also want to angle the labels 
 ```
 
 ## Exploring a different dataset 
@@ -198,7 +199,7 @@ ggplot(beaverday, aes(activ, temp)) +
   theme_bw()
 ```
 
-### Bonus 
+### **Bonus** 
 
 Original code:
 
