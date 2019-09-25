@@ -1,7 +1,7 @@
 ---
 title: "Assignment 2"
 author: "Linda Dumalo"
-date: "23/09/2019"
+date: "24/09/2019"
 output:
   pdf_document: default
   html_document:
@@ -93,11 +93,11 @@ gapminder %>%
   scale_x_log10() + 
   xlab("GDP per Capita") + 
   ylab("Life Exptectancy")  
-  
-# want to add labels corresonding to the year for each point 
+  # theme_bw was not working!
+  # wanted to add labels corresonding to the year for each point
 ``` 
 
-# Exercise 2 
+## **Exercise 2**
 
 ### Categorical Variable Exploration 
 
@@ -106,7 +106,7 @@ Exploring the GDP per capita (gdpPercap) for the countries in Asia for the year 
 **Maximum GDP Per Capita**
 
 ``` {r}
-gapminder %>%  # was, trying to show the higest and the lowest gdppercap in 1 table 
+Maxgdp <- gapminder %>%  # was, trying to show the higest and the lowest gdppercap in 1 table, realize that this likely will not work using summarize...  
   filter(continent == 'Asia') %>%
   filter(year == 2007) %>%
   summarize(max_gdpPercap = max(gdpPercap), country = country[gdpPercap == max_gdpPercap]) %>%
@@ -117,7 +117,7 @@ gapminder %>%  # was, trying to show the higest and the lowest gdppercap in 1 ta
 **Minimum GDP Per Capita**
 
 ``` {r}
-gapminder %>%  # was, trying to show the higest and the lowest gdppercap 
+Mingdp <- gapminder %>%  # was, trying to show the higest and the lowest gdppercap 
   select(country, continent, year, gdpPercap) %>%
   filter(continent == 'Asia') %>%
   filter(year == 2007) %>%
@@ -125,34 +125,14 @@ gapminder %>%  # was, trying to show the higest and the lowest gdppercap
   select(country, min_gdpPercap) %>%
   top_n(-1)  
 ```
-** The average GDP per Capita for the year 2007 ** 
 
-``` {r} 
-gapminder %>%  
-  filter(continent == 'Asia') %>%
-  filter(year == 2007) %>%
-  summarize(gdpPercap = mean(gdpPercap))  
-```
+**Minimum and Maximum GDP per capita in 2007 in Asia**  
 
-Minimum and Maximum GDP per capita in 2007 in Asia 
+Minimum GDP per capitat in 2007 was **Myanmar** at $ 944  USD and the maximum GDP per capita was **Kuwait** with $ 47307. 
 
-| **Country**  | **GDP per Capita in 2007**  | 
----------------------------------------------
-| Myanmar      | 944                         |
-| Kuwait       | 47307                       |
+Ideally, would have plotted these into a bar graph or something 
 
-Total GDP per capita in Asia for 2007 
-
-``` {r} 
-gapminder %>%  
-  filter(continent == 'Asia') %>%
-  filter(year == 2007) %>%
-  summarize(gdpPercap = sum(gdpPercap)) 
-``` 
-
-
-
-## Exercise 3: Explore various plot type
+## **Exercise 3: Explore various plot type**
 
 Instead of focusing on the year 2007, the GDP per capita in the countries of Asia will be analyzed from 1987 to 2007 For the countries with the top 10 GDP 
 
@@ -171,9 +151,10 @@ gapminder %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   # theme(axis.text.x = element_text(angle = 45, hjust = 1))
   ylab("GDP per Capita") 
+  # not pretty... 
 ```
 
-## Exploring a different dataset 
+## Exploring a Dfferent dataset 
 
 Source for description of data:
 https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/beavers.html 
