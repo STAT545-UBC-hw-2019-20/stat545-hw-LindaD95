@@ -1,0 +1,39 @@
+---
+title: "Assignment 2"
+author: "Linda Dumalo"
+date: "24/09/2019"
+output:
+  pdf_document: default
+  html_document:
+    keep_md: yes
+--- 
+
+```{r setup, include=FALSE, message=F}
+
+library(gapminder)
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(ggridges)
+library(scales)
+knitr::kable 
+``` 
+
+
+## Option 3 
+
+Look at the spread of GDP per capita within the continents. 
+Goal: Create a jitterplot with the continents on the x asis and the GDP per capita on the x 
+
+```{r}
+gapminder %>% 
+  filter(year > 1980) %>% 
+  ggplot(aes(continent, gdpPercap, colour = year)) + 
+  geom_jitter() + 
+  geom_point(alpha = 0.2) + 
+  xlab("Continent") +
+  ylab("GDP per Capita") +
+  labs(fill = "Year") # wanted to capitalize the legend title 
+# what is the 
+```
+
