@@ -26,14 +26,17 @@ Look at the spread of GDP per capita within the continents.
 Goal: Create a jitterplot with the continents on the x asis and the GDP per capita on the x 
 
 ```{r}
+#maybe change some dimensions 
 gapminder %>% 
   filter(year > 1980) %>% 
-  ggplot(aes(continent, gdpPercap, colour = year)) + 
-  geom_jitter() + 
-  geom_point(alpha = 0.2) + 
+  # maybe rename the year variable to year here 
+  rename("Year" = "year") %>% 
+  ggplot(aes(continent, gdpPercap, colour = Year)) + 
+  geom_jitter(width = 0.3) + 
+  geom_point(alpha = 0.08) + 
   xlab("Continent") +
   ylab("GDP per Capita") +
-  labs(fill = "Year") # wanted to capitalize the legend title 
-# what is the 
+  theme_bw() 
+  # bonus is to remove the grid lies 
 ```
 
