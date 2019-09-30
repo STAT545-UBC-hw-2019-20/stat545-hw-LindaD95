@@ -1,4 +1,4 @@
-# ** Assignment 3 ** 
+# **Assignment 3** 
 
 ### Diving deeper into dplyr and ggplot 
 
