@@ -22,6 +22,14 @@ However, I am having a hard time generating this table
 Continent | year |  average lifeExp 
 
 what if within ggplot you group by continent? 
+```{r setup, include=FALSE, message=F}
+
+library(gapminder)
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+knitr::kable 
+``` 
 
 ```{r still a hot mess of lines} 
 gapminder %>%
@@ -39,7 +47,8 @@ gapminder %>%
   # option 1: find a way to summarize continent and meanlifeExp for each year and then pipe into ggplot 
   # ggplot(aes(x = (year it works but not with continent), MeanLifeExp))
   # this output would be the average lifeExp for all years and countries, not very useful 
-``` 
+```
+
 ```{r, task 5, attempt 3, from attempt 1}
 # tried adding in the year, similar to what was done during class 
 gapminder %>%
@@ -87,12 +96,70 @@ gapminder %>%
 # v1 
 # grouped by country but then lost the data for the year 
 gapminder %>%
-  group_by(country) %>%
-  summarize(MeanLifeExp = mean(lifeExp), year = year[lifeExp = MeanLifeExp], continent = continent[lifeExp = MeanLifeExp]) 
+  group_by(year) %>%
+  summarize(MeanLifeExp = mean(lifeExp), country = country[lifeExp == MeanLifeExp])
 ```
+
+```{r}
+gapminder %>% 
+  group_by(continent, year) %>%
+  summarise(lifeExp=mean(lifeExp)) %>%
+  ggplot(aes(x=year, y=lifeExp, color=continent)) +
+  geom_line(size=1) + 
+  geom_point(size=1.5)
+```
+
 
 ```{r task 5, attempt 4} 
 # v2 
 # FAIL  
 gapminder %>%
   summarize(MeanLifeExp = mean(lifeExp), year = year[lifeExp = MeanLifeExp], continent = continent[lifeExp = MeanLifeExp]) 
+```
+
+## **Task 5** Route 2 
+
+How is life expectancy changing over time on different continents? 
+
+Original aim: plot the average life expectancy for each continent in a geom_line() (total of 5 different lines) 
+Create a histogram of the difference in life expectancy between 1977 to 2007 between continents 
+
+Use lag and stuff 
+
+```{r}
+gapminder %>% 
+  filter(year %in% c(1977, 2007)) %>%
+  # not grouping by continent first 
+  group_by(country) %>% 
+  arrange(year) %>% 
+  mutate(DeltaLifeExp = difference(lifeExp)) %>% 
+  drop_na() %>% 
+  ungroup() %>%
+  group_by(continent) %>%
+  arrange(continent) %>% 
+  summarise(MeanDeltaLifeExp = mean(DeltaLifeExp)) %>% 
+  # ggplot(aes(continent, MeanDeltaLifeExp)) +
+  ggplot(aes(continent, MeanDeltaLifeExp, fill = continent)) +
+  geom_bar(stat="identity") + 
+  xlab("Continent") + 
+  ylab("Change in Life Expectancy") +
+  # find the proper code legend(hide) +
+  # also want to make a blue theme 
+  theme_bw() 
+``` 
+All continents experienced an increase in life expectancy from 1977 and 2007. Asia experienced the highest increase whereas Africa experienced the lowest; 11.1 and 5.2 year respectively. 
+
+```{r task 5 route 2, results='hide'}
+gapminder %>% 
+  filter(year %in% c(1977, 2007)) %>%
+  # not grouping by continent first 
+  group_by(country) %>% 
+  arrange(year) %>% 
+  mutate(DeltaLifeExp = difference(lifeExp)) %>% 
+  drop_na() %>% 
+  ungroup() %>%
+  group_by(continent) %>%
+  arrange(continent) %>% 
+  summarise(MeanDeltaLifeExp = mean(DeltaLifeExp))
+
+```
