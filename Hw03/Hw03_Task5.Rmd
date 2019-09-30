@@ -1,0 +1,98 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+## Task 5 Route 1 
+
+Want to have the year on the x axis and on thee y ais lifeExp and each continent as a different trendline
+Working backwards
+need to take the average life expetancy for each continent per year and plot 
+ideally would have a tibble that has 
+
+Plot the life expectancy in geom_path per year and have  different lines each representing the continent 
+My initial approach (approach 1) involved summarizing the gapminder data to have the average life expectancy for each year for each continent using group_by() and summarize() 
+So the table headings might read something like 
+Continent | Year | Average LifeExp 
+Asia  | 1952 | x |
+Asia | 1957 | y | 
+The reason that I wanted to do this is because I recall in class that ggplot will not recognize any grouping in previous pipes. 
+However, I am having a hard time generating this table  
+
+Continent | year |  average lifeExp 
+
+what if within ggplot you group by continent? 
+
+```{r still a hot mess of lines} 
+gapminder %>%
+  ggplot(aes(year, lifeExp)) +
+  geom_path()
+```
+
+```{r, task 5, attempt 1}
+gapminder %>%
+  # group_by(year) %>%, <- include this and the output is the same 
+  group_by(continent) %>%
+  arrange(year) %>% 
+  summarize(MeanLifeExp = mean(lifeExp)) 
+  # the problem with summarizing seems to be that it obliderates the other variables since the error is saying that continent is not found 
+  # option 1: find a way to summarize continent and meanlifeExp for each year and then pipe into ggplot 
+  # ggplot(aes(x = (year it works but not with continent), MeanLifeExp))
+  # this output would be the average lifeExp for all years and countries, not very useful 
+``` 
+```{r, task 5, attempt 3, from attempt 1}
+# tried adding in the year, similar to what was done during class 
+gapminder %>%
+  # group_by(year) %>% 
+  group_by(continent) %>%
+  arrange(year) %>% 
+  summarize(MeanLifeExp = mean(lifeExp), year = year[lifeExp = MeanLifeExp]) 
+```
+
+```{r, task 5, attempt 2}
+#v1 
+gapminder %>%
+  group_by(year) %>% 
+  arrange(year) %>% 
+  summarize(MeanLifeExp = mean(lifeExp))
+  # error obtained: Column `continent` must be length 1 (a summary value), not 0 
+```
+```{r,  task 5, attempt 2}
+# v2
+gapminder %>%
+    group_by(year, country) %>%  # having just country results in the same error as above 
+  arrange(year) %>% 
+  summarize(MeanLifeExp = mean(lifeExp), continent = continent[lifeExp == MeanLifeExp]) 
+```
+
+```{r,  task 5, attempt 2}
+# v3 Not sure what I am trying... 
+gapminder %>%
+  group_by(country, continent) %>%  # having just country results in the same error as above 
+  arrange(year) %>% 
+  summarize(MeanLifeExp = mean(lifeExp)) 
+```
+
+```{r,  task 5, attempt 2}
+# v4 Not sure what I am trying... 
+gapminder %>%
+  group_by(country, continent) %>%  # having just country results in the same error as above 
+  arrange(year) %>% 
+  # summarize(MeanLifeExp = mean(lifeExp)) %>% 
+  ggplot(aes(year, lifeExp)) + 
+  geom_path()
+```
+
+```{r task 5, attempt 4} 
+# v1 
+# grouped by country but then lost the data for the year 
+gapminder %>%
+  group_by(country) %>%
+  summarize(MeanLifeExp = mean(lifeExp), year = year[lifeExp = MeanLifeExp], continent = continent[lifeExp = MeanLifeExp]) 
+```
+
+```{r task 5, attempt 4} 
+# v2 
+# FAIL  
+gapminder %>%
+  summarize(MeanLifeExp = mean(lifeExp), year = year[lifeExp = MeanLifeExp], continent = continent[lifeExp = MeanLifeExp]) 

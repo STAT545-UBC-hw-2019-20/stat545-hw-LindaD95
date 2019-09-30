@@ -1,0 +1,235 @@
+---
+title: "Assignment 2"
+author: "Linda Dumalo"
+date: "24/09/2019"
+output:
+  pdf_document: default
+  html_document:
+    keep_md: yes
+--- 
+
+```{r setup, include=FALSE, message=F}
+
+library(gapminder)
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(ggridges)
+library(scales)
+knitr::kable 
+``` 
+
+
+## **Task 3** 
+
+Look at the spread of GDP per capita within the continents. 
+
+GDP per capita by continent was analyzed from 1982 to 2007 using the Gapminder dataset and is displayed on the jitter plot below. 
+
+
+```{r fig.width = 12, fig.height = 4} 
+#maybe change some dimensions 
+gapminder %>% 
+  filter(year > 1976) %>% 
+  rename("Year" = "year") %>% 
+  ggplot(aes(continent, gdpPercap, colour = Year)) + 
+  geom_jitter(width = 0.3) + 
+  geom_point(alpha = 0.08) + 
+  xlab("Continent") +
+  scale_y_log10("GDP per Capita", labels= scales::dollar_format()) + 
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
+  # if tie permits, add some labels 
+```
+```{r max GDP per Cap, results='hide'}
+gapminder %>% 
+  filter(year > 1976) %>% 
+  rename("Year" = "year") %>% 
+  summarize(maxGDPperCap = max(gdpPercap), Year = Year[gdpPercap == maxGDPperCap], continent = continent[gdpPercap == maxGDPperCap], country = country[gdpPercap == maxGDPperCap]) 
+```
+```{r min GDP per Cap, results='hide'}
+gapminder %>% 
+  filter(year > 1980) %>% 
+  rename("Year" = "year") %>% 
+  summarize(minGDPperCap = min(gdpPercap), Year = Year[gdpPercap == minGDPperCap], continent = continent[gdpPercap == minGDPperCap], country = country[gdpPercap == minGDPperCap]) 
+```
+
+The maximum GDP per capita was seen in 1977 by Kuwait ($ 59265) and the minimum value experienced was seen in the Democratic Republic of Congo in 2002 ($ 241). 
+
+
+## Task 5 Route 1 
+
+Want to have the year on the x axis and on thee y ais lifeExp and each continent as a different trendline
+Working backwards
+need to take the average life expetancy for each continent per year and plot 
+ideally would have a tibble that has 
+
+Plot the life expectancy in geom_path per year and have  different lines each representing the continent 
+My initial approach (approach 1) involved summarizing the gapminder data to have the average life expectancy for each year for each continent using group_by() and summarize() 
+So the table headings might read something like 
+Continent | Year | Average LifeExp 
+Asia  | 1952 | x |
+Asia | 1957 | y | 
+The reason that I wanted to do this is because I recall in class that ggplot will not recognize any grouping in previous pipes. 
+However, I am having a hard time generating this table  
+
+Continent | year |  average lifeExp 
+
+what if within ggplot you group by continent? 
+
+```{r still a hot mess of lines} 
+gapminder %>%
+  ggplot(aes(year, lifeExp)) +
+  geom_path()
+```
+
+```{r, task 5, attempt 1}
+gapminder %>%
+  # group_by(year) %>%, <- include this and the output is the same 
+  group_by(continent) %>%
+  arrange(year) %>% 
+  summarize(MeanLifeExp = mean(lifeExp)) 
+  # the problem with summarizing seems to be that it obliderates the other variables since the error is saying that continent is not found 
+  # option 1: find a way to summarize continent and meanlifeExp for each year and then pipe into ggplot 
+  # ggplot(aes(x = (year it works but not with continent), MeanLifeExp))
+  # this output would be the average lifeExp for all years and countries, not very useful 
+``` 
+```{r, task 5, attempt 3, from attempt 1}
+# tried adding in the year, similar to what was done during class 
+gapminder %>%
+  # group_by(year) %>% 
+  group_by(continent) %>%
+  arrange(year) %>% 
+  summarize(MeanLifeExp = mean(lifeExp), year = year[lifeExp = MeanLifeExp]) 
+```
+
+```{r, task 5, attempt 2}
+#v1 
+gapminder %>%
+  group_by(year) %>% 
+  arrange(year) %>% 
+  summarize(MeanLifeExp = mean(lifeExp))
+  # error obtained: Column `continent` must be length 1 (a summary value), not 0 
+```
+```{r,  task 5, attempt 2}
+# v2
+gapminder %>%
+    group_by(year, country) %>%  # having just country results in the same error as above 
+  arrange(year) %>% 
+  summarize(MeanLifeExp = mean(lifeExp), continent = continent[lifeExp == MeanLifeExp]) 
+```
+
+```{r,  task 5, attempt 2}
+# v3 Not sure what I am trying... 
+gapminder %>%
+  group_by(country, continent) %>%  # having just country results in the same error as above 
+  arrange(year) %>% 
+  summarize(MeanLifeExp = mean(lifeExp)) 
+```
+
+```{r,  task 5, attempt 2}
+# v4 Not sure what I am trying... 
+gapminder %>%
+  group_by(country, continent) %>%  # having just country results in the same error as above 
+  arrange(year) %>% 
+  # summarize(MeanLifeExp = mean(lifeExp)) %>% 
+  ggplot(aes(year, lifeExp)) + 
+  geom_path()
+```
+
+```{r task 5, attempt 4} 
+# v1 
+# grouped by country but then lost the data for the year 
+gapminder %>%
+  group_by(country) %>%
+  summarize(MeanLifeExp = mean(lifeExp), year = year[lifeExp = MeanLifeExp], continent = continent[lifeExp = MeanLifeExp]) 
+```
+
+```{r task 5, attempt 4} 
+# v2 
+# FAIL  
+gapminder %>%
+  summarize(MeanLifeExp = mean(lifeExp), year = year[lifeExp = MeanLifeExp], continent = continent[lifeExp = MeanLifeExp]) 
+```
+
+## **Task 5** Route 2 
+
+How is life expectancy changing over time on different continents? 
+
+Original aim: plot the average life expectancy for each continent in a geom_line() (total of 5 different lines) 
+Create a histogram of the difference in life expectancy between 1977 to 2007 between continents 
+
+Use lag and stuff 
+
+```{r}
+gapminder %>% 
+  filter(year %in% c(1977, 2007)) %>%
+  # not grouping by continent first 
+  group_by(country) %>% 
+  arrange(year) %>% 
+  mutate(DeltaLifeExp = difference(lifeExp)) %>% 
+  drop_na() %>% 
+  ungroup() %>%
+  group_by(continent) %>%
+  arrange(continent) %>% 
+  summarise(MeanDeltaLifeExp = mean(DeltaLifeExp)) %>% 
+  # ggplot(aes(continent, MeanDeltaLifeExp)) +
+  ggplot(aes(continent, MeanDeltaLifeExp, fill = continent)) +
+  geom_bar(stat="identity") + 
+  xlab("Continent") + 
+  ylab("Change in Life Expectancy") +
+  # find the proper code legend(hide) +
+  # also want to make a blue theme 
+  theme_bw() 
+``` 
+All continents experienced an increase in life expectancy from 1977 and 2007. Asia experienced the highest increase whereas Africa experienced the lowest; 11.1 and 5.2 year respectively. 
+
+```{r task 5 route 2, results='hide'}
+gapminder %>% 
+  filter(year %in% c(1977, 2007)) %>%
+  # not grouping by continent first 
+  group_by(country) %>% 
+  arrange(year) %>% 
+  mutate(DeltaLifeExp = difference(lifeExp)) %>% 
+  drop_na() %>% 
+  ungroup() %>%
+  group_by(continent) %>%
+  arrange(continent) %>% 
+  summarise(MeanDeltaLifeExp = mean(DeltaLifeExp))
+
+```
+
+## ** Task 4 ** 
+
+
+
+```{r, Determine the quantiles}
+# ideally would have life to have done the filtering of years first 
+quantile(gapminder$lifeExp)
+x <- 48.198 # storing the value for the quartile 
+```
+```{r number of countries} 
+gapminder %>% 
+  filter(year %in% (1977: 2007))
+# 36 different countries, mostly in Africa 
+  
+```
+```{r fig.width = 12, fig.height = 4} 
+gapminder %>% 
+  filter(year %in% (1977: 2007)) %>% 
+  filter(lifeExp < x, continent == 'Africa') %>% 
+  mutate(wlifeExp = lifeExp/(pop/1000000)) %>% 
+  arrange(year) %>%
+  ggplot(aes(year, wlifeExp, fill = country, colour = country)) +
+  geom_jitter(width = 1.8) + 
+  geom_point(alpha = 0.3) +
+  theme_bw() +
+ # scale_x_discrete(name = "Year", breaks = c("1977", "1982", "1987", "1992", "1997", "2002", "2007"), labels = c("1977", "1982", "1987", "1992", "1997", "2002", "2007"), limits = c("1977", "1982", "1987", "1992", "1997", "2002", "2007")) +
+  xlim("1977", "1982", "1987", "1992", "1997", "2002", "2007") +
+  ylab("Weighted Life Expectancy year/(popultion/1000000)") + # not sure why I lost the year
+  xlab("Year") + 
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
+``` 
+# 
+
+
