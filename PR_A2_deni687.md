@@ -1,4 +1,6 @@
-## Peer Review for Assignment 2, 2019/09/26
+## **Peer Review for Assignment 2**  
+## 2019/09/26
+
 ##### By: Linda
 
 
