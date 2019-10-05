@@ -1,0 +1,122 @@
+---
+title: "Assignmet 4"
+output: html_document
+---
+
+--
+title: "Assignment 3"
+author: "Linda Dumalo"
+date: "October 1, 2019"
+output:
+  html_document:
+    keep_md: yes
+  pdf_document: default
+--- 
+
+```{r setup, include=FALSE, message=F}
+library(gapminder)
+library(tidyverse)
+library(ggplot2)
+library(knitr)
+library(ggridges)
+library(scales)
+library(tidyr)
+library(dplyr)
+library(readr)
+knitr::kable 
+``` 
+
+## Exercise 1: Univariate Data Reshaping 
+
+#### Option 1
+
+Make a tibble with one row per year, and columns for life expectancy for two or more countries.
+
+```{r Option 1 Wide, include=TRUE}
+# target table to have years on the left and "widen" country column 
+OptI <- gapminder %>% 
+  filter(country ==  "Canada" | country == "Mexico") %>% 
+  select(country, year, lifeExp) %>% 
+  pivot_wider(id_cols = year,
+              names_from = country,
+              values_from = lifeExp)
+OptI 
+```
+
+Relengthen the data. 
+
+```{r}
+OptI %>%
+  pivot_longer(cols = c("Canada", "Mexico"), 
+               names_to = "Country", 
+               values_to = "Life_Exp") %>%
+# Order wrong so rearrange 
+arrange(Country, year, Life_Exp)
+```
+
+The Exercise asked to plot the widened data by plotting the 2 countries against each other. Interpreted this as plot one Country on x and 1 country on y. Where each point represents a year and the values for each country are a life epectancy. 
+
+```{r}
+OptI %>% 
+  ggplot(aes(Canada, Mexico)) + 
+  geom_point()
+```
+To compare though how the life expectancies differ between the countries per year it is easier to use the unwiden data 
+
+```{r}
+gapminder %>% 
+  filter(country ==  "Canada" | country == "Mexico") %>% 
+  select(country, year, lifeExp) %>% 
+  ggplot(aes(year, lifeExp, fill = country, colour = country)) + 
+  geom_point()
+```
+
+
+
+```{r Trying to combine the 2 different plots into 1 plot}
+Can <- OptI %>% 
+  ggplot(aes(year, Canada)) + 
+  geom_point() 
+Can + ggplot(aes(year, Mexico)) + 
+  geom_point()
+           
+```
+```{r}
+OptI %>% 
+  ggplot(aes(x = year, y = Canada | y = Mexico)) + 
+  geom_point() 
+```
+```{r}
+OptI + ggplot(OptI, aes(year, Mexico)) + 
+  geom_point()
+```
+
+## Multivariate Data 
+#### Option 1 
+
+Make a tibble with one row per year, and columns for life expectancy and GDP per capita (or two other numeric variables) for Canada and Mexico. 
+
+
+```{r Multivariatedata option1 v2}
+# The observation is the combination of country, lifearget table column headers for each year
+gapminder %>% 
+  filter(country ==  "Canada" | country == "Mexico") %>% 
+  select(year, country, lifeExp, gdpPercap) %>%
+  pivot_wider(id_cols = year,
+            names_from = country,
+            names_sep = "_",
+            values_from = c(lifeExp, gdpPercap))
+
+# is there a way to invert the order? ie have the column headers appear as Country_(lifeExp or gdppercap) 
+```
+```{r}
+gapminder %>% 
+  filter(country ==  "Canada" | country == "Mexico") %>% 
+  select(year, country, lifeExp, gdpPercap) %>%
+  pivot_wider(id_cols = year,
+            names_from = country,
+            names_sep = "_", 
+    
+            values_from = c(lifeExp, gdpPercap))
+```
+
