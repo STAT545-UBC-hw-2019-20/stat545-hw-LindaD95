@@ -141,7 +141,7 @@ guest %>%
 
 #### 3.2 
 
-Who are there emails for but are not on the guest list? Not being on the guest list is to be intrepted as not having a meal or being in attendance to any event. 
+Who are there emails for but are not on the guest list? Not being on the guest list is to be intrepted as not having a meal or being in attendance to any event which also equates to not being in a party ie party *NA*  
 
 ```{r keep for now, discard upon revision}
 # would think that you would want to do a right join in order to keep all observations in y ie the emails
@@ -157,4 +157,13 @@ guest %>%
 ```
 
 Those who are not on the guest list but there was an email for were Turner Jones and Albert and Vivian Marshall. 
+
+#### 3.2 
+Make a guestlist that includes everyone we have emails for (in addition to those on the original guestlist).
+
+```{r}
+guest %>% 
+  right_join(email2, by = "name") %>% 
+  select(party, name, email)
+```
 
