@@ -122,7 +122,7 @@ We analyze the "continent" categorical variable and the "lifeExp" quantitative v
 ```{r continent}
 ggplot(gapminder, aes(continent)) + 
   geom_bar() + 
-  ggtitle('Count of Observations by Continent') + 
+  ggtitle('Count of Observations by Continent') +  
   theme(plot.title = element_text(color='black', face="bold")) + 
   ylab('Number of Observations') +
   xlab('Continent')

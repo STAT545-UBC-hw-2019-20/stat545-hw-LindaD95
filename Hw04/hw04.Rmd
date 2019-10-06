@@ -72,51 +72,89 @@ gapminder %>%
 ```
 
 
-
-```{r Trying to combine the 2 different plots into 1 plot}
-Can <- OptI %>% 
-  ggplot(aes(year, Canada)) + 
-  geom_point() 
-Can + ggplot(aes(year, Mexico)) + 
-  geom_point()
-           
-```
-```{r}
-OptI %>% 
-  ggplot(aes(x = year, y = Canada | y = Mexico)) + 
-  geom_point() 
-```
-```{r}
-OptI + ggplot(OptI, aes(year, Mexico)) + 
-  geom_point()
-```
-
-## Multivariate Data 
+## **Multivariate Data** 
 #### Option 1 
 
 Make a tibble with one row per year, and columns for life expectancy and GDP per capita (or two other numeric variables) for Canada and Mexico. 
 
 
 ```{r Multivariatedata option1 v2}
-# The observation is the combination of country, lifearget table column headers for each year
-gapminder %>% 
+# The observation is the combination of country, lifeExp and gdpPercap 
+OptIM <- gapminder %>% 
   filter(country ==  "Canada" | country == "Mexico") %>% 
   select(year, country, lifeExp, gdpPercap) %>%
   pivot_wider(id_cols = year,
             names_from = country,
             names_sep = "_",
             values_from = c(lifeExp, gdpPercap))
-
+OptIM
 # is there a way to invert the order? ie have the column headers appear as Country_(lifeExp or gdppercap) 
 ```
+
+Relengthen the data
+Fuck. 
+
 ```{r}
-gapminder %>% 
-  filter(country ==  "Canada" | country == "Mexico") %>% 
-  select(year, country, lifeExp, gdpPercap) %>%
-  pivot_wider(id_cols = year,
-            names_from = country,
-            names_sep = "_", 
-    
-            values_from = c(lifeExp, gdpPercap))
+OptIM %>%
+  pivot_longer(cols = c(-year), # is this the correct line to start? I think so... 
+               names_to = c(".value", "country"), 
+               names_sep = "_") %>%
+  arrange(country, year) 
+# Data is too long and the country names are in the headers 
+               
+               
 ```
+
+## **Exercise 3** - Table Joins 
+
+```{r}
+guest <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/attend.csv")
+email <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/emails.csv")
+```
+#### Exercise 3.1
+
+Add an email column from the email tibble to the guest tibble.
+
+```{r, Original email and guest tibbles}
+head(guest)
+head(email)
+```
+
+In order to perform the join functions, the email tibble format needs to be changed to match the guest tibble.
+
+The changes that need to be made to the email tibble are: 
+
+1. Have one observation ie name per row 
+2. Change column name guest to name. 
+
+```{r Step1}
+email2 <- email %>% 
+  separate_rows(guest, sep = ", ") %>% 
+  rename("name" = "guest")
+email2
+```
+```{r Step2} 
+guest %>% 
+  left_join(email2, by = "name") 
+# left join was used to keep all the observations 
+```
+
+#### 3.2 
+
+Who are there emails for but are not on the guest list? Not being on the guest list is to be intrepted as not having a meal or being in attendance to any event. 
+
+```{r keep for now, discard upon revision}
+# would think that you would want to do a right join in order to keep all observations in y ie the emails
+guest %>% 
+  right_join(email2, by = "name")
+# This though is informing on who has emails and are on the guest list 
+```
+```{r, filtering for wedding attendance} 
+guest %>% 
+  full_join(email2, by = "name") %>% 
+  filter(is.na(party)) %>% 
+  select(party, name, attendance_wedding, email) 
+```
+
+Those who are not on the guest list but there was an email for were Turner Jones and Albert and Vivian Marshall. 
 
