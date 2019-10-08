@@ -4,13 +4,8 @@ output: html_document
 ---
 
 --
-title: "Assignment 3"
-author: "Linda Dumalo"
-date: "October 1, 2019"
-output:
-  html_document:
-    keep_md: yes
-  pdf_document: default
+Author: "Linda Dumalo"
+Date: "October 8, 2019"
 --- 
 
 ```{r setup, include=FALSE, message=F}
@@ -23,7 +18,7 @@ library(scales)
 library(tidyr)
 library(dplyr)
 library(readr)
-knitr::kable 
+library(DT)
 ``` 
 
 ## Exercise 1: Univariate Data Reshaping 
@@ -40,7 +35,8 @@ OptI <- gapminder %>%
   pivot_wider(id_cols = year,
               names_from = country,
               values_from = lifeExp)
-OptI 
+OptI %>% 
+  DT::datatable()
 ```
 
 Relengthen the data. 
@@ -51,7 +47,8 @@ OptI %>%
                names_to = "Country", 
                values_to = "Life_Exp") %>%
 # Order wrong so rearrange 
-arrange(Country, year, Life_Exp)
+arrange(Country, year, Life_Exp) %>% 
+DT::datatable()
 ```
 
 The Exercise asked to plot the widened data by plotting the 2 countries against each other. Interpreted this as plot one Country on x and 1 country on y. Where each point represents a year and the values for each country are a life epectancy. 
@@ -59,20 +56,22 @@ The Exercise asked to plot the widened data by plotting the 2 countries against 
 ```{r}
 OptI %>% 
   ggplot(aes(Canada, Mexico)) + 
-  geom_point()
+  geom_point() + 
+  theme_bw() 
 ```
-To compare though how the life expectancies differ between the countries per year it is easier to use the unwiden data 
+To compare though how the life expectancies differ between the countries per year it is easier to use the data in the orignal format. 
 
 ```{r}
 gapminder %>% 
   filter(country ==  "Canada" | country == "Mexico") %>% 
   select(country, year, lifeExp) %>% 
   ggplot(aes(year, lifeExp, fill = country, colour = country)) + 
-  geom_point()
+  geom_point() + 
+  theme_bw() 
 ```
 
 
-## **Multivariate Data** 
+## **Exercise 2** - Multivariate Data 
 #### Option 1 
 
 Make a tibble with one row per year, and columns for life expectancy and GDP per capita (or two other numeric variables) for Canada and Mexico. 
@@ -87,21 +86,20 @@ OptIM <- gapminder %>%
             names_from = country,
             names_sep = "_",
             values_from = c(lifeExp, gdpPercap))
-OptIM
-# is there a way to invert the order? ie have the column headers appear as Country_(lifeExp or gdppercap) 
+OptIM %>% 
+  DT::datatable() 
+
 ```
 
 Relengthen the data
-Fuck. 
 
 ```{r}
 OptIM %>%
   pivot_longer(cols = c(-year), # is this the correct line to start? I think so... 
                names_to = c(".value", "country"), 
                names_sep = "_") %>%
-  arrange(country, year) 
-# Data is too long and the country names are in the headers 
-               
+  arrange(country, year) %>%
+DT::datatable()               
                
 ```
 
@@ -111,7 +109,7 @@ OptIM %>%
 guest <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/attend.csv")
 email <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/emails.csv")
 ```
-#### Exercise 3.1
+#### **3.1**
 
 Add an email column from the email tibble to the guest tibble.
 
@@ -131,25 +129,21 @@ The changes that need to be made to the email tibble are:
 email2 <- email %>% 
   separate_rows(guest, sep = ", ") %>% 
   rename("name" = "guest")
-email2
+email2 %>% 
+  DT::datatable()
 ```
 ```{r Step2} 
 guest %>% 
-  left_join(email2, by = "name") 
+  left_join(email2, by = "name") %>% 
 # left join was used to keep all the observations 
+  DT::datatable() 
 ```
 
-#### 3.2 
+#### **3.2**
 
 Who are there emails for but are not on the guest list? Not being on the guest list is to be intrepted as not having a meal or being in attendance to any event which also equates to not being in a party ie party *NA*  
 
-```{r keep for now, discard upon revision}
-# would think that you would want to do a right join in order to keep all observations in y ie the emails
-guest %>% 
-  right_join(email2, by = "name")
-# This though is informing on who has emails and are on the guest list 
-```
-```{r, filtering for wedding attendance} 
+```{r} 
 guest %>% 
   full_join(email2, by = "name") %>% 
   filter(is.na(party)) %>% 
@@ -158,7 +152,7 @@ guest %>%
 
 Those who are not on the guest list but there was an email for were Turner Jones and Albert and Vivian Marshall. 
 
-#### 3.2 
+#### **3.3** 
 Make a guestlist that includes everyone we have emails for (in addition to those on the original guestlist).
 
 ```{r}
