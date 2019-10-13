@@ -1,0 +1,39 @@
+---
+title: "Assignment 5"
+Date: OCtober 17th 2019
+Author: Linda Dumalo 
+output: html_document
+---
+
+
+```{r}
+library(gapminder)
+library(dplyr)
+library(forcats)
+library(ggplot2)
+```
+
+## **Exercise 2:** Factor Management 
+
+```{r results='hide'}
+gapminder
+```
+
+The variables that are factors in the gapminder dataset are **country** and **continent**. Observations assoicated with "OCenia" will be removed along with unused factor levels. 
+
+```{r}
+gapminder$continent %>% 
+  nlevels()
+
+```
+There are 5 levels originally in the gapminder dataset for continent. Removal of Ocenia reduces it to 4. 
+
+```{r}
+gapminder %>% 
+  factor(c("Africa", "Asia", "Europe", "Americas")) %>% 
+  nlevels() 
+  # should have some code here to display that it worked... 
+```
+
+
+After filterring, the number of rows decreased from 1704 to to 1680 rows
