@@ -55,6 +55,26 @@ gap %>%
 
 ```
 
+## **Exercise 3 :** File Input/Output 
 
+```{r}
+gap97 <- gap %>%  
+  filter(year == 1997) %>% 
+  mutate(gdpTotal = gdpPercap*pop) 
+  
+```
 
+Write csv with here package 
+
+```{r}
+# Not sure on how much of the file path to include 
+write.csv(gap97, here::here("Hw05", "gap97.csv"))  
+```
+
+Lets see if this worked
+
+```{r}
+read.csv(here::here("Hw05", "gap97.csv")) %>% 
+  select(country, gdpTotal)
+```
 
