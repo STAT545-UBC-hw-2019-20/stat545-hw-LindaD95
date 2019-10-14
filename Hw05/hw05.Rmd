@@ -57,24 +57,36 @@ gap %>%
 
 ## **Exercise 3 :** File Input/Output 
 
+The manipulated data from exercise 2 was written and read using write.csv and read.csv respectively along with here::here(). 
+
 ```{r}
 gap97 <- gap %>%  
   filter(year == 1997) %>% 
-  mutate(gdpTotal = gdpPercap*pop) 
-  
+  mutate(gdpTotal = gdpPercap*pop) %>% 
 ```
 
-Write csv with here package 
 
-```{r}
+```{r write csv}
 # Not sure on how much of the file path to include 
 write.csv(gap97, here::here("Hw05", "gap97.csv"))  
 ```
 
-Lets see if this worked
+```{r read csv} 
+gap97a <- read.csv(here::here("Hw05", "gap97.csv"))
+```
 
 ```{r}
-read.csv(here::here("Hw05", "gap97.csv")) %>% 
-  select(country, gdpTotal)
+gap97a %>% 
+  select(country, gdpTotal) #summarized 
 ```
+Currently, the data is sorted alphabetically based on the factor country. 
+
+```{r}
+gap97a %>% 
+  fct_reorder(country, gdpTotal, .desc = TRUE) 
+```
+
+
+Manipulating the factors based on the data (change this wording)
+
 

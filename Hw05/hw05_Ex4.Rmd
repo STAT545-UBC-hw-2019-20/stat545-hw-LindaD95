@@ -1,0 +1,15 @@
+---
+title: "hw05 Exercise 4"
+output: html_document
+---
+
+```{r}
+gapminder %>%
+  filter(country == "Canada") %>% # add other countries 
+  ggplot(aes(gdpPercap, lifeExp)) + 
+  geom_point() + 
+  scale_x_log10() + 
+  xlab("GDP per Capita") + 
+  ylab("Life Exptectancy") 
+```
+
