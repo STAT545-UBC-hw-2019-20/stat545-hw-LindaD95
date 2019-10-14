@@ -6,7 +6,7 @@ output: html_document
 ---
 
 
-```{r}
+```{r setup, include=FALSE}
 library(gapminder)
 library(dplyr)
 library(forcats)
@@ -19,21 +19,42 @@ library(ggplot2)
 gapminder
 ```
 
-The variables that are factors in the gapminder dataset are **country** and **continent**. Observations assoicated with "OCenia" will be removed along with unused factor levels. 
+The variables that are factors in the gapminder dataset are **country** and **continent**. Observations assoicated with "Ocenia" will be removed along with unused factor levels. 
 
-```{r}
-gapminder$continent %>% 
-  nlevels()
+To compare how dropping factors and using arange affects data, the tibble with the dropped factors will be dubbded as "gap."
 
-```
-There are 5 levels originally in the gapminder dataset for continent. Removal of Ocenia reduces it to 4. 
 
-```{r}
-gapminder %>% 
-  factor(c("Africa", "Asia", "Europe", "Americas")) %>% 
-  nlevels() 
+```{r v0}
+gap= gapminder %>% 
+  filter(continent %in% c("Africa", "Asia", "Europe", "Americas")) %>% 
+  droplevels()
+levels(gap$continent)
   # should have some code here to display that it worked... 
 ```
 
 
-After filterring, the number of rows decreased from 1704 to to 1680 rows
+Going to look at total GDP for the year 1997  
+
+```{r v0: not using factors + ugly} 
+gap %>%  
+  filter(year == 1997) %>% 
+  mutate(gdpTotal = gdpPercap*pop) %>%  
+  group_by(continent) %>%
+  summarize(av_gdpTotal = mean(gdpTotal)) %>% 
+  ggplot(aes(continent, av_gdpTotal)) + 
+  geom_histogram(stat="identity") 
+
+```
+
+```{r}
+gap %>%  
+  filter(year == 1997) %>% 
+  mutate(gdpTotal = gdpPercap*pop) %>%  
+  ggplot(aes(fct_reorder(country, gdpTotal, max)), gdpTotal) + 
+  geom_histogram(stat="identity") 
+
+```
+
+
+
+
