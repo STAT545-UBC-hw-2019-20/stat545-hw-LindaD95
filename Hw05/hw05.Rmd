@@ -12,6 +12,7 @@ library(dplyr)
 library(forcats)
 library(ggplot2)
 library(plotly) 
+library(DT)
 ```
 
 ## **Exercise 2:** Factor Management 
@@ -37,24 +38,22 @@ levels(gap$continent)
 Going to look at total GDP for the year 1997  
 
 ```{r v0: not using factors + ugly} 
-gap %>%  
+gap97 %>%  
   filter(year == 1997) %>% 
   mutate(gdpTotal = gdpPercap*pop) %>%  
   group_by(continent) %>%
-  summarize(av_gdpTotal = mean(gdpTotal)) %>% 
-  ggplot(aes(continent, av_gdpTotal)) + 
-  geom_histogram(stat="identity") 
+  summarize(av_gdpTotal = mean(gdpTotal)/1000000000) %>% 
+  ggplot(aes(continent, av_gdpTotal, colour = continent, fill = continent)) + 
+  geom_histogram(stat="identity") +
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        legend.position = "none") +
+  xlab("Continent") + 
+  ylab("Average Total GDP/ billion (USD)") 
 
 ```
 
-```{r}
-gap %>%  
-  filter(year == 1997) %>% 
-  mutate(gdpTotal = gdpPercap*pop) %>%  
-  ggplot(aes(fct_reorder(country, gdpTotal, max)), gdpTotal) + 
-  geom_histogram(stat="identity") 
-
-```
 
 ## **Exercise 3 :** File Input/Output 
 
@@ -72,18 +71,23 @@ write.csv(gap97, here::here("Hw05", "gap97.csv"))
 ```
 
 ```{r read csv} 
-gap97a <- read.csv(here::here("Hw05", "gap97.csv"))
+gap97 <- read.csv(here::here("Hw05", "gap97.csv"))
 ```
 
 ```{r}
-gap97a %>% 
-  select(country, gdpTotal) #summarized 
+gap97 %>% 
+  select(country, gdpTotal) %>%#summarized
+DT::datatable()
 ```
+**Success.** 
+
 Currently, the data is sorted alphabetically based on the factor country. 
 
 ```{r}
-gap97a %>% 
-  fct_reorder(country, gdpTotal, .desc = TRUE) 
+gap97 %>% 
+  mutate(country = fct_reorder(gdpPercap, country, .desc = TRUE)) %>% 
+DT::datatable()
+# still appears to 
 ```
 
 
@@ -103,7 +107,8 @@ gapminder %>%
   ylab("Life Exptectancy") 
 ```
 
-I wanted to compare the trends between the 3 countries and felt that it was hard to tell the trends on the same plot. So I decided to use facet_wrap() as previously had been done in class. 
+I wanted to compare the trends between the 3 countries and felt that it was hard to tell the trends on the same plot. So I decided to use facet_wrap() as previously had been done in class. Also, in order to obtain more information about a point on the graph I used Plotly. 
+
 
 ```{r, fig.width = 11, fig.height = 5}
 #  {r, fig.width = 5, fig.height = 2}
@@ -122,11 +127,15 @@ gap3 <- gapminder %>%
   theme(panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(), 
         plot.title = element_text(size=16, face="bold"), 
-        legend.position = "none")
-gap3
+        legend.position = "none") + 
+  theme(axis.title.x = element_text(vjust = -2), axis.title.y = element_text(vjust = -2)) # last ditch attempt to fix the crowded axis titles
+
+gap3 %>% 
+  ggplotly()
 ```
 
-Save the plot tto folder. 
+
+Save the plot to folder. 
 
 ```{r}
 gap3
@@ -134,8 +143,6 @@ ggsave("gap3.png")
 # way to use here::here() package? 
 ```
 
-![GDP versus Life Expectancy for Brazil, Canada and China](/here::here(gap3.png)) 
+![GDP versus Life Expectancy for Brazil, Canada and China](https://github.com/STAT545-UBC-hw-2019-20/stat545-hw-LindaD95/blob/master/Hw05/gap3.png) 
 
 ^ Attempting to embed the image 
-
-

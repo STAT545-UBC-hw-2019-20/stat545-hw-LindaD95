@@ -21,7 +21,7 @@ library(readr)
 library(DT)
 ``` 
 
-## Exercise 1: Univariate Data Reshaping 
+## **Exercise 1:** Univariate Data Reshaping 
 
 #### Option 1
 
@@ -71,7 +71,7 @@ gapminder %>%
 ```
 
 
-## **Exercise 2** - Multivariate Data 
+## **Exercise 2:** Multivariate Data 
 #### Option 1 
 
 Make a tibble with one row per year, and columns for life expectancy and GDP per capita (or two other numeric variables) for Canada and Mexico. 
@@ -103,7 +103,7 @@ DT::datatable()
                
 ```
 
-## **Exercise 3** - Table Joins 
+## **Exercise 3:** Table Joins 
 
 ```{r}
 guest <- read_csv("https://raw.githubusercontent.com/STAT545-UBC/Classroom/master/data/wedding/attend.csv")
