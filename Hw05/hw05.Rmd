@@ -11,6 +11,7 @@ library(gapminder)
 library(dplyr)
 library(forcats)
 library(ggplot2)
+library(plotly) 
 ```
 
 ## **Exercise 2:** Factor Management 
@@ -62,12 +63,11 @@ The manipulated data from exercise 2 was written and read using write.csv and re
 ```{r}
 gap97 <- gap %>%  
   filter(year == 1997) %>% 
-  mutate(gdpTotal = gdpPercap*pop) %>% 
+  mutate(gdpTotal = gdpPercap*pop) 
 ```
 
 
 ```{r write csv}
-# Not sure on how much of the file path to include 
 write.csv(gap97, here::here("Hw05", "gap97.csv"))  
 ```
 
@@ -88,5 +88,54 @@ gap97a %>%
 
 
 Manipulating the factors based on the data (change this wording)
+
+## **Exercise 4:** Data Visualization  
+
+In Assignment 2 we looked at the GDP per capita versus the life expectancy of Canada. I wanted to extend the analysis to 2 other countries,, specifically China and Brazil 
+
+```{r}
+gapminder %>%
+  filter(country == "Canada"| country == "China" | country == "Brazil") %>% # add other countries 
+  ggplot(aes(gdpPercap, lifeExp, colour = country)) + 
+  geom_point() + 
+  scale_x_log10() + 
+  xlab("GDP per Capita") + 
+  ylab("Life Exptectancy") 
+```
+
+I wanted to compare the trends between the 3 countries and felt that it was hard to tell the trends on the same plot. So I decided to use facet_wrap() as previously had been done in class. 
+
+```{r, fig.width = 11, fig.height = 5}
+#  {r, fig.width = 5, fig.height = 2}
+gap3 <- gapminder %>% 
+  filter(country == "Canada"| country == "China" | country == "Brazil") %>% 
+  ggplot(aes(gdpPercap, lifeExp, fill = country, colour = country, labels = year)) +
+  facet_wrap(~ country, nrow = 1) + 
+  geom_point(alpha = 0.5) +  
+  scale_x_log10(labels = scales::comma_format()) + 
+  xlab("GDP Per Capita") + 
+  ylab("Life Expectancy (Years)") +
+  ggtitle(" GDP per Capita versus Life Expectancy") + 
+  theme(plot.title = element_text(size=16, face="bold")) +
+  scale_size_area() +
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        plot.title = element_text(size=16, face="bold"), 
+        legend.position = "none")
+gap3
+```
+
+Save the plot tto folder. 
+
+```{r}
+gap3
+ggsave("gap3.png") 
+# way to use here::here() package? 
+```
+
+![GDP versus Life Expectancy for Brazil, Canada and China](/here::here(gap3.png)) 
+
+^ Attempting to embed the image 
 
 

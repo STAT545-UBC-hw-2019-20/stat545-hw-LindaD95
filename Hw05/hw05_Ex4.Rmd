@@ -3,13 +3,47 @@ title: "hw05 Exercise 4"
 output: html_document
 ---
 
+```{r setup, include=FALSE}
+library(gapminder)
+library(dplyr)
+library(ggplot2)
+```
+
+In Assignment 2 we looked at the GDP per capita versus the life expectancy of Canada. I wanted to extend the analysis to 2 other countries,, specifically China and Brazil 
 ```{r}
 gapminder %>%
-  filter(country == "Canada") %>% # add other countries 
-  ggplot(aes(gdpPercap, lifeExp)) + 
+  filter(country == "Canada"| country == "China" | country == "Brazil") %>% # add other countries 
+  ggplot(aes(gdpPercap, lifeExp, colour = country)) + 
   geom_point() + 
   scale_x_log10() + 
   xlab("GDP per Capita") + 
   ylab("Life Exptectancy") 
 ```
 
+I wanted to compare the trends between the 3 countries and felt that it was hard to tell the trends on the same plot. So I decided to use facet_wrap() as previously had been done in class. 
+
+```{r, fig.width = 9, fig.height = 5}
+#  {r, fig.width = 5, fig.height = 2}
+gapminder %>% 
+  filter(country == "Canada"| country == "China" | country == "Brazil") %>% 
+  ggplot(aes(gdpPercap, lifeExp, fill = country, colour = country)) +
+  # ggplot(aes(gdpPercap, lifeExp, fill = country, label = max(year), label = min(year))) + # well that did nnot work to label the max and the min year 
+  facet_wrap(~ country, nrow = 1) + 
+  # geom_point(alpha = 0., shape = 21)
+  geom_point(alpha = 0.5) + # 21 = "hollow" circle" 
+  scale_x_log10(labels = scales::comma_format()) + 
+  xlab("GDP Per Capita") + 
+  ylab("Life Expectancy (Years)") +
+  ggtitle(" GDP per Capita versus Life Expectancy from") + 
+  theme(plot.title = element_text(size=16, face="bold")) +
+  # population is reflected in point area: 
+  scale_size_area() + # solves overlpotting too
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        plot.title = element_text(size=16, face="bold"), 
+        legend.position = "none")
+
+
+# Things to improve the graph: black and white, axis labels, maybe ditch the grids, fix the legends (why is the population still there? ), label the maximum values (will have to dig back to someone's old assignment), maybe label the years? 
+```
