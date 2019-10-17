@@ -1,10 +1,16 @@
 ---
 title: "Assignment 5"
-Date: OCtober 17th 2019
-Author: Linda Dumalo 
+Date: "October 17th 2019"
+Author: "Linda Dumalo" 
+
 output: html_document
+keep_md: true  
+
 ---
 
+#### **Exercise 1:** Thoughts on the here::here Package   
+
+Accessibility to your work when using Rstuido allows for better collaboration and obtaining help from other R users. Frustration arises from those who by default start the scripts with setwd() and rm(list = ls())  at the beginning of their scripts due to the fact that in order for someone else to access the files if they rewirte the *exact* path on their computer this is partially due to the fact that the rules that dictate file paths between operating systems are not harmonious. Jenny Byran recommends to use the here::here package as it more robust than simply just working with R projects which she still recommends to do also. The here package creates relative file paths, avoiding the language barrier between operating systems. Even if you are not in the directory, here() can find the working directory. Manipulated data to produce a new table or figure could also be saved in different subdirectories without having to change the relative directory. Another great benefit of here is that files can still run outside of Rstudio. 
 
 ```{r setup, include=FALSE}
 library(gapminder)
@@ -13,6 +19,10 @@ library(forcats)
 library(ggplot2)
 library(plotly) 
 library(DT)
+```
+
+```{r allow errors, echo = FALSE}
+knitr::opts_chunk$set(error = TRUE, warning = FALSE)
 ```
 
 ## **Exercise 2:** Factor Management 
@@ -38,7 +48,7 @@ levels(gap$continent)
 Going to look at total GDP for the year 1997  
 
 ```{r v0: not using factors + ugly} 
-gap97 %>%  
+gapminder %>% 
   filter(year == 1997) %>% 
   mutate(gdpTotal = gdpPercap*pop) %>%  
   group_by(continent) %>%
@@ -51,7 +61,6 @@ gap97 %>%
         legend.position = "none") +
   xlab("Continent") + 
   ylab("Average Total GDP/ billion (USD)") 
-
 ```
 
 
@@ -67,29 +76,37 @@ gap97 <- gap %>%
 
 
 ```{r write csv}
-write.csv(gap97, here::here("Hw05", "gap97.csv"))  
+write.csv(gap97, here::here("Hw05", "gap97b.csv"))  
 ```
 
 ```{r read csv} 
-gap97 <- read.csv(here::here("Hw05", "gap97.csv"))
+gap97b <- read.csv(here::here("Hw05", "gap97b.csv"))
 ```
 
 ```{r}
-gap97 %>% 
+gap97b %>% 
   select(country, gdpTotal) %>%#summarized
 DT::datatable()
 ```
 **Success.** 
 
-Currently, the data is sorted alphabetically based on the factor country. 
+Currently, the data is sorted alphabetically based on the factor country. I would like to sort the countries based on the GDP per Capita value. 
 
 ```{r}
 gap97 %>% 
-  mutate(country = fct_reorder(gdpPercap, country, .desc = TRUE)) %>% 
+  mutate(country = fct_reorder(gdpPercap, country)) %>% 
 DT::datatable()
-# still appears to 
+# What if I gdppercap and country?
 ```
+```{r}
+gap97 %>% 
+  mutate(country = fct_reorder(country, gdpPercap)) %>% 
+gap97$country %>% 
+  levels() 
+```
+#### Need more practice with working with levels evidently 
 
+The countries were still sorted alphabetically and not based on the GDP per capita value. 
 
 Manipulating the factors based on the data (change this wording)
 
@@ -139,10 +156,10 @@ Save the plot to folder.
 
 ```{r}
 gap3
-ggsave("gap3.png") 
+ggsave("gap3.png", width = 5.5, height = 2.5, units = "in") 
 # way to use here::here() package? 
 ```
+Here is a nice image than the plotly (hopefully) 
 
 ![GDP versus Life Expectancy for Brazil, Canada and China](https://github.com/STAT545-UBC-hw-2019-20/stat545-hw-LindaD95/blob/master/Hw05/gap3.png) 
 
-^ Attempting to embed the image 
